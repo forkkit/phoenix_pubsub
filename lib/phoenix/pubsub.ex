@@ -1,6 +1,6 @@
 defmodule Phoenix.PubSub do
   @moduledoc """
-  Realtime Publisher/Subscriber servicec.
+  Realtime Publisher/Subscriber service.
 
   ## Getting started
 
@@ -72,7 +72,7 @@ defmodule Phoenix.PubSub do
   end
 
   @doc """
-  Returns a child specifiction for pubsub with the given `options`.
+  Returns a child specification for pubsub with the given `options`.
 
   The `:name` is required as part of `options`. The remaining options
   are described below.
@@ -91,7 +91,7 @@ defmodule Phoenix.PubSub do
   @doc """
   Subscribes the caller to the PubSub adapter's topic.
 
-    * `server` - The Pid registered name of the server
+    * `pubsub` - The name of the pubsub system
     * `topic` - The topic to subscribe to, for example: `"users:123"`
     * `opts` - The optional list of options. See below.
 
@@ -100,7 +100,7 @@ defmodule Phoenix.PubSub do
   Callers should only subscribe to a given topic a single time.
   Duplicate subscriptions for a Pid/topic pair are allowed and
   will cause duplicate events to be sent; however, when using
-  `Phoenix.PubSub.unsubscribe/3`, all duplicate subscriptions
+  `Phoenix.PubSub.unsubscribe/2`, all duplicate subscriptions
   will be dropped.
 
   ## Options
@@ -131,7 +131,7 @@ defmodule Phoenix.PubSub do
   @doc """
   Broadcasts message on given topic across the whole cluster.
 
-    * `pubsub` - The name of the pubsub sytem
+    * `pubsub` - The name of the pubsub system
     * `topic` - The topic to broadcast to, ie: `"users:123"`
     * `message` - The payload of the broadcast
 
@@ -151,11 +151,12 @@ defmodule Phoenix.PubSub do
   @doc """
   Broadcasts message on given topic from the given process across the whole cluster.
 
-    * `pubsub` - The name of the pubsub sytem
+    * `pubsub` - The name of the pubsub system
+    * `from` - The pid that will send the message
     * `topic` - The topic to broadcast to, ie: `"users:123"`
     * `message` - The payload of the broadcast
 
-  A custom dispatcher may also be given as a fourth, optional argument.
+  A custom dispatcher may also be given as a fifth, optional argument.
   See the "Custom dispatching" section in the module documentation.
   """
   @spec broadcast_from(t, pid, topic, message, dispatcher) :: :ok | {:error, term}
@@ -171,7 +172,7 @@ defmodule Phoenix.PubSub do
   @doc """
   Broadcasts message on given topic only for the current node.
 
-    * `pubsub` - The name of the pubsub sytem
+    * `pubsub` - The name of the pubsub system
     * `topic` - The topic to broadcast to, ie: `"users:123"`
     * `message` - The payload of the broadcast
 
@@ -187,7 +188,8 @@ defmodule Phoenix.PubSub do
   @doc """
   Broadcasts message on given topic from a given process only for the current node.
 
-    * `pubsub` - The name of the pubsub sytem
+    * `pubsub` - The name of the pubsub system
+    * `from` - The pid that will send the message
     * `topic` - The topic to broadcast to, ie: `"users:123"`
     * `message` - The payload of the broadcast
 
@@ -204,7 +206,7 @@ defmodule Phoenix.PubSub do
   Broadcasts message on given topic to a given node.
 
     * `node_name` - The target node name
-    * `pubsub` - The name of the pubsub sytem
+    * `pubsub` - The name of the pubsub system
     * `topic` - The topic to broadcast to, ie: `"users:123"`
     * `message` - The payload of the broadcast
 
@@ -222,7 +224,7 @@ defmodule Phoenix.PubSub do
   end
 
   @doc """
-  Raising version of `broadcast!/4`.
+  Raising version of `broadcast/4`.
   """
   @spec broadcast!(t, topic, message, dispatcher) :: :ok
   def broadcast!(pubsub, topic, message, dispatcher \\ __MODULE__) do
@@ -233,7 +235,7 @@ defmodule Phoenix.PubSub do
   end
 
   @doc """
-  Raising version of `broadcast_from!/5`.
+  Raising version of `broadcast_from/5`.
   """
   @spec broadcast_from!(t, pid, topic, message, dispatcher) :: :ok
   def broadcast_from!(pubsub, from, topic, message, dispatcher \\ __MODULE__) do
@@ -244,7 +246,7 @@ defmodule Phoenix.PubSub do
   end
 
   @doc """
-  Raising version of `direct_broadcast!/5`.
+  Raising version of `direct_broadcast/5`.
   """
   @spec direct_broadcast!(node_name, t, topic, message, dispatcher) :: :ok
   def direct_broadcast!(node_name, pubsub, topic, message, dispatcher \\ __MODULE__) do

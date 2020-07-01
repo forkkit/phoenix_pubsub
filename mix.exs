@@ -1,9 +1,7 @@
-Enum.each(Path.wildcard("tasks/*.exs"), &Code.require_file/1)
-
 defmodule Phoenix.PubSub.Mixfile do
   use Mix.Project
 
-  @version "2.0.0-dev"
+  @version "2.0.0"
 
   def project do
     [
@@ -24,6 +22,7 @@ defmodule Phoenix.PubSub.Mixfile do
 
   def application do
     [
+      mod: {Phoenix.PubSub.Application, []},
       applications: [:logger, :crypto],
     ]
   end
